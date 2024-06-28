@@ -1,4 +1,3 @@
-import e from "express";
 import userService from "../service/user-service.js"
 
 const register = async (req, resp, next) => {
@@ -8,8 +7,19 @@ const register = async (req, resp, next) => {
             data: result
         });
     } catch (error) {
-        next(e);
+        next(error);
     }
 }
 
-export default { register }
+
+const login = async (req, resp, next) => {
+    try {
+        const result = await userService.login(req.body);
+        resp.status(200).json({
+            data: result
+        });
+    } catch (error) {
+        next(error)
+    }
+}
+export default { register, login }
