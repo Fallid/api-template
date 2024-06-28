@@ -20,7 +20,7 @@ export const prismaClient = new PrismaClient({
             emit: 'event',
             level: 'warn',
         },
-    ]
+    ],
 });
 
 // sending log from prisma client to winston logging
@@ -33,9 +33,9 @@ prismaClient.$on('warn', (e) => {
 });
 
 prismaClient.$on('info', (e) => {
-    logger.warn(e);
+    logger.info(e);
 });
 
 prismaClient.$on('query', (e) => {
-    logger.warn(e);
+    logger.info(e);
 });
