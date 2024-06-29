@@ -7,6 +7,8 @@ const createContactValidation = Joi.object({
     phone: Joi.string().max(20).optional()
 })
 
-export{
-    createContactValidation
+const getContactValidation = Joi.number().positive().required();
+
+export {
+    createContactValidation, getContactValidation
 }

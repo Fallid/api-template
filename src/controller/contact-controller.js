@@ -1,6 +1,6 @@
 import contactService from "../service/contact-service"
 
-const create = async(req, resp, next)=>{
+const create = async (req, resp, next) => {
     try {
         const user = req.user;
         const request = req.body;
@@ -13,4 +13,17 @@ const create = async(req, resp, next)=>{
     }
 }
 
-export default {create}
+const get = async (req, resp, next) => {
+    try {
+        const user = req.user;
+        const contactId = req.params.contactId;
+        const result = await contactService.get(user, contactId);
+        resp.status(200).json({
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export default { create, get }
