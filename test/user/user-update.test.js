@@ -59,7 +59,7 @@ describe('PATCH /api/users/current', function () {
 
         expect(result.status).toBe(200);
         expect(result.body.data.username).toBe('test');
-        expect(result.body.data.name).toBe('opal');
+        expect(result.body.data.name).toBe('test');
 
         //need compare the password using bcrypt because we already hasing the password
         const getUser = await getTestUser();
