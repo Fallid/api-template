@@ -50,4 +50,15 @@ const update = async(req, resp, next)=>{
         next(error);
     }
 }
-export default { register, login, get, update }
+
+const logout = async(req, resp, next)=>{
+    try {
+        await userService.logout(req.user.username);
+        resp.status(200).json({
+            data: "Logout Success"
+        });
+    } catch (error) {
+        next(error)
+    }
+}
+export default { register, login, get, update, logout }
