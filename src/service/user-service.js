@@ -1,6 +1,6 @@
 import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
-import { getUserValidation, loginUserValidation, registerUserValidation } from "../validation/user-validation.js"
+import { getUserValidation, loginUserValidation, registerUserValidation, updateUserValidation } from "../validation/user-validation.js"
 import { validate } from "../validation/validation.js"
 import { v4 as uuid } from "uuid";
 import bcrypt from "bcrypt";
@@ -69,21 +69,61 @@ const login = async (request) => {
 const get = async (username) => {
     username = validate(getUserValidation, username);
 
-    const user =  await prismaClient.user.findUnique({
+    const user = await prismaClient.user.findUnique({
         where: {
             username: username
         },
-        select:{
+        select: {
             username: true,
             name: true
         }
     });
 
-    if(!user){
+    if (!user) {
         throw new ResponseError(404, "User is not found");
     }
 
     return user;
 }
 
-export default { register, login, get }
+const update = async (request) => {
+    //validating the request before updating user
+    const user = validate(updateUserValidation, request);
+
+    //check if in database has the user by username
+    const totalUserInDatabase = await prismaClient.user.count({
+        where: {
+            username: user.username
+        }
+    })
+
+    // User is not found in database
+    if (totalUserInDatabase !== 1) {
+        throw new ResponseError(404, "User is not found");
+    }
+
+    //variabel will contain the new data
+    const data = {};
+
+    // if the user want to update name
+    if (user.name) {
+        data.name = user.name;
+    }
+    // if the user want to update password
+    if (user.password) {
+        data.password = await bcrypt.hash(user.password, 10);
+    }
+
+    return prismaClient.user.update({
+        where: {
+            username: user.username
+        },
+        data: data,
+        select: {
+            username: true,
+            name: true
+        }
+    })
+}
+
+export default { register, login, get, update }
