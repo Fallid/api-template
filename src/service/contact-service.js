@@ -56,7 +56,7 @@ const update = async (user, request) => {
     })
     // if contact is null
     if (countContact !== 1) {
-        throw new ResponseError(404, "Contact is  not found");
+        throw new ResponseError(404, "Contact is not found");
     }
 
     return prismaClient.contact.update({
