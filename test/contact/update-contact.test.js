@@ -63,7 +63,7 @@ describe('PUT /api/contacts/:contactId', function () {
             .send({
                 first_name:  "",
                 last_name: "update",
-                email: "update@mail.com",
+                email: "update",
                 phone:"08080808008080808080808"
             })
             const message = result.text.match(/Error: .*?(?=<br>)/)
@@ -71,6 +71,24 @@ describe('PUT /api/contacts/:contactId', function () {
             logger.info(message);
 
             expect(result.status).toBe(400);
+            expect(result.error).toBeDefined();  
+    })
+    it('should reject update if contact is not found', async () => {
+        const testContactBody = await getTestContact();
+        const result = await supertest(web)
+            .put('/api/contacts/' +  testContactBody.id + 1)
+            .set('Authorization', 'test')
+            .send({
+                first_name:  "update",
+                last_name: "update",
+                email: "update@mail.com",
+                phone:"08080808"
+            })
+            const message = result.text.match(/Error: .*?(?=<br>)/)
+
+            logger.info(message);
+
+            expect(result.status).toBe(404);
             expect(result.error).toBeDefined();  
     })
 })
