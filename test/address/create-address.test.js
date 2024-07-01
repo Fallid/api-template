@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { createTestContact, createTestUser, getTestContact, removeAllAddressed, removeAllTestContact, removeTestUser } from "../test-util.js";
+import { createTestContact, createTestUser, getTestContact, removeTestAllAddressed, removeAllTestContact, removeTestUser } from "../test-util.js";
 import { web } from "../../src/application/web.js";
 import { logger } from "../../src/application/logging.js";
 
@@ -10,7 +10,7 @@ describe('POST /api/contacts/:contactsId/addresses', function () {
     })
 
     afterEach(async () => {
-        await removeAllAddressed();
+        await removeTestAllAddressed();
         await removeAllTestContact();
         await removeTestUser();
     })
@@ -29,6 +29,7 @@ describe('POST /api/contacts/:contactsId/addresses', function () {
             })
         logger.info(result.body)
         expect(result.status).toBe(200)
+        expect(result.body.data.id).toBeDefined()
         expect(result.body.data.street).toBe("test jalan")
         expect(result.body.data.city).toBe("test kota")
         expect(result.body.data.province).toBe("test provinsi")
