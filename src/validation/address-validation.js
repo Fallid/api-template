@@ -10,6 +10,15 @@ const createAddressValidation = Joi.object({
 
 const getAddressValidation = Joi.number().min(1).positive().required();
 
-export{
-    createAddressValidation, getAddressValidation
+const updateAddressValidation = Joi.object({
+    id: Joi.number().min(1).positive().required(),
+    street: Joi.string().max(255).optional().empty(''),
+    city: Joi.string().max(100).optional().empty(''),
+    province: Joi.string().max(100).optional().empty(''),
+    country: Joi.string().max(100).required(),
+    postal_code: Joi.string().max(10).required()
+})
+
+export {
+    createAddressValidation, getAddressValidation, updateAddressValidation
 }
