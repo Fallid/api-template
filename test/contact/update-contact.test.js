@@ -18,77 +18,71 @@ describe('PUT /api/contacts/:contactId', function () {
     it('should can update existing contact', async () => {
         const testContactBody = await getTestContact();
         const result = await supertest(web)
-            .put('/api/contacts/' +  testContactBody.id)
+            .put('/api/contacts/' + testContactBody.id)
             .set('Authorization', 'test')
             .send({
-                first_name:  "update",
+                first_name: "update",
                 last_name: "update",
                 email: "update@mail.com",
-                phone:"08080808"
+                phone: "08080808"
             })
 
-            logger.info(result.body)
+        logger.info(result.body)
 
-            expect(result.status).toBe(200);
-            expect(result.body.data.id).toBeDefined();
-            expect(result.body.data.first_name).toBe("update");
-            expect(result.body.data.last_name).toBe("update");
-            expect(result.body.data.email).toBe("update@mail.com");
-            expect(result.body.data.phone).toBe("08080808");  
+        expect(result.status).toBe(200);
+        expect(result.body.data.id).toBeDefined();
+        expect(result.body.data.first_name).toBe("update");
+        expect(result.body.data.last_name).toBe("update");
+        expect(result.body.data.email).toBe("update@mail.com");
+        expect(result.body.data.phone).toBe("08080808");
     })
 
     it('should reject update if auth invalid', async () => {
         const testContactBody = await getTestContact();
         const result = await supertest(web)
-            .put('/api/contacts/' +  testContactBody.id)
+            .put('/api/contacts/' + testContactBody.id)
             .set('Authorization', 'salah')
             .send({
-                first_name:  "update",
+                first_name: "update",
                 last_name: "update",
                 email: "update@mail.com",
-                phone:"08080808"
+                phone: "08080808"
             })
-
-            logger.info(result.body)
-
-            expect(result.status).toBe(401);
-            expect(result.body.errors).toBeDefined();  
+        logger.error(result.body.errors)
+        expect(result.status).toBe(401);
+        expect(result.body.errors).toBeDefined();
     })
 
     it('should reject update if request invalid', async () => {
         const testContactBody = await getTestContact();
         const result = await supertest(web)
-            .put('/api/contacts/' +  testContactBody.id)
+            .put('/api/contacts/' + testContactBody.id)
             .set('Authorization', 'test')
             .send({
-                first_name:  "",
+                first_name: "",
                 last_name: "update",
                 email: "update",
-                phone:"08080808008080808080808"
+                phone: "08080808008080808080808"
             })
-            const message = result.text.match(/Error: .*?(?=<br>)/)
 
-            logger.info(message);
-
-            expect(result.status).toBe(400);
-            expect(result.error).toBeDefined();  
+        logger.error(result.body.errors)
+        expect(result.status).toBe(400);
+        expect(result.error).toBeDefined();
     })
     it('should reject update if contact is not found', async () => {
         const testContactBody = await getTestContact();
         const result = await supertest(web)
-            .put('/api/contacts/' +  testContactBody.id + 1)
+            .put('/api/contacts/' + testContactBody.id + 1)
             .set('Authorization', 'test')
             .send({
-                first_name:  "update",
+                first_name: "update",
                 last_name: "update",
                 email: "update@mail.com",
-                phone:"08080808"
+                phone: "08080808"
             })
-            const message = result.text.match(/Error: .*?(?=<br>)/)
 
-            logger.info(message);
-
-            expect(result.status).toBe(404);
-            expect(result.error).toBeDefined();  
+        logger.error(result.body.errors)
+        expect(result.status).toBe(404);
+        expect(result.error).toBeDefined();
     })
 })

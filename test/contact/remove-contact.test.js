@@ -32,7 +32,7 @@ describe('', function () {
             .delete('/api/contacts/' + testContactBody.id)
             .set('Authorization', 'salah')
 
-        logger.info(result.body)
+        logger.error(result.body.errors)
 
         expect(result.status).toBe(401);
     })
@@ -43,9 +43,7 @@ describe('', function () {
             .delete('/api/contacts/' + testContactBody.id + 1)
             .set('Authorization', 'test')
 
-        const message = result.text.match(/Error: .*?(?=<br>)/)
-
-        logger.info(message);
+        logger.error(result.body.errors)
         expect(result.status).toBe(404);
         expect(result.error).toBeDefined();
     })

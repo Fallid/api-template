@@ -32,6 +32,7 @@ describe('PATCH /api/users/current', function () {
         expect(await bcrypt.compare("diupdate", getUser.password)).toBe(true);
 
     })
+    
     it('should can update only name', async () => {
         const result = await supertest(web)
             .patch('/api/users/current')
@@ -72,7 +73,7 @@ describe('PATCH /api/users/current', function () {
             .set('Authorization', 'salah')
             .send({});
 
-        logger.info(result.body);
+        logger.info(result.body.errors);
 
         expect(result.status).toBe(401);
         expect(result.error).toBeDefined();
@@ -86,8 +87,7 @@ describe('PATCH /api/users/current', function () {
                 name: '',
                 password: '',
             });
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-        logger.info(message);
+        logger.error(result.body.errors)
 
         expect(result.status).toBe(400);
         expect(result.error).toBeDefined();

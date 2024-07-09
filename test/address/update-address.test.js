@@ -55,9 +55,7 @@ describe('PUT /api/contacts/:contactId/addresses/:addressId', function () {
                 postal_code: "20030303"
             })
 
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-
-        logger.error(message);
+        logger.error(result.body.errors)
         expect(result.status).toBe(404)
         expect(result.error).toBeDefined()
     })
@@ -77,9 +75,7 @@ describe('PUT /api/contacts/:contactId/addresses/:addressId', function () {
                 postal_code: "20030303"
             })
 
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-
-        logger.error(message);
+        logger.error(result.body.errors)
         expect(result.status).toBe(404)
         expect(result.error).toBeDefined()
     })
@@ -119,9 +115,7 @@ describe('PUT /api/contacts/:contactId/addresses/:addressId', function () {
                 postal_code: "20030303030303"
             })
 
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-
-        logger.error(message);
+        logger.error(result.body.errors)
         expect(result.status).toBe(400)
         expect(result.error).toBeDefined()
     })

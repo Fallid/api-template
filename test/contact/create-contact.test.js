@@ -33,6 +33,22 @@ describe('POST /api/contacts', function () {
             expect(result.body.data.email).toBe("test@mail.com");
             expect(result.body.data.phone).toBe("123456789");  
     })
+    
+    it('should cant create new contact if invalid authorization', async () => {
+        const result = await supertest(web)
+            .post('/api/contacts')
+            .set('Authorization', 'salah')
+            .send({
+                first_name:  "",
+                last_name: "test",
+                email: "test@mail.com",
+                phone:"123456789012345678901"
+            })
+            logger.error(result.body.errors)
+
+            expect(result.status).toBe(401);
+            expect(result.error).toBeDefined();  
+    })
 
     it('should cant create new contact if request is not valid', async () => {
         const result = await supertest(web)
@@ -44,9 +60,7 @@ describe('POST /api/contacts', function () {
                 email: "test@mail.com",
                 phone:"123456789012345678901"
             })
-            const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-
-            logger.info(message);
+            logger.error(result.body.errors)
 
             expect(result.status).toBe(400);
             expect(result.error).toBeDefined();  

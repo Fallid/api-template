@@ -29,15 +29,27 @@ describe('GET /api/contacts/:contactId', function () {
         expect(result.body.data.email).toBe(testContactBody.email);
         expect(result.body.data.phone).toBe(testContactBody.phone);
     })
-    it('should reject if auth is invalid ', async () => {
+    it('should reject if invalid authorization ', async () => {
         const testContactBody = await getTestContact();
         const result = await supertest(web)
             .get('/api/contacts/' + testContactBody.id)
             .set('Authorization', 'salah')
 
-        logger.info(result.body)
+        logger.error(result.body.errors)
 
         expect(result.status).toBe(401)
+        expect(result.body.errors).toBeDefined();
+    })
+
+    it('should reject if contact is not found ', async () => {
+        const testContactBody = await getTestContact();
+        const result = await supertest(web)
+            .get('/api/contacts/' + (testContactBody.id + 1))
+            .set('Authorization', 'test')
+
+        logger.error(result.body.errors)
+
+        expect(result.status).toBe(404)
         expect(result.body.errors).toBeDefined();
     })
 })

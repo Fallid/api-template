@@ -2,6 +2,7 @@ import supertest from "supertest";
 import { web } from "../../src/application/web.js";
 import { logger } from "../../src/application/logging.js";
 import { removeTestUser } from "../test-util.js";
+
 describe('POST /api/users', function () {
 
     afterEach(async () => {
@@ -33,9 +34,7 @@ describe('POST /api/users', function () {
                 password: '',
                 name: ''
             });
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-
-        logger.info(message);
+        logger.error(result.body.errors)
 
         expect(result.status).toBe(400);
         expect(result.error).toBeDefined();

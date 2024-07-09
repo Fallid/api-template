@@ -26,13 +26,13 @@ describe('DELETE /api/users/logout', function () {
         expect(user.token).toBeNull();
 
     })
-    
+
     it('should cant logout if token invalid', async () => {
         const result = await supertest(web)
             .delete('/api/users/logout')
             .set('Authorization', 'salah');
 
-        logger.info(result.body);
+        logger.info(result.body.errors);
 
         expect(result.status).toBe(401);
     })

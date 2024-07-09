@@ -49,7 +49,7 @@ describe('POST /api/contacts/:contactsId/addresses', function () {
                 country: "test negara",
                 postal_code: "03032003"
             })
-        logger.info(result.body)
+        logger.info(result.body.errors)
         expect(result.status).toBe(401)
         expect(result.body.errors).toBeDefined()
     })
@@ -66,9 +66,7 @@ describe('POST /api/contacts/:contactsId/addresses', function () {
                 country: "",
                 postal_code: "030320030303"
             })
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-
-        logger.info(message);
+        logger.error(result.body.errors)
         expect(result.status).toBe(400)
         expect(result.error).toBeDefined()
     })
@@ -85,9 +83,8 @@ describe('POST /api/contacts/:contactsId/addresses', function () {
                 country: "",
                 postal_code: "030320030303"
             })
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
 
-        logger.info(message);
+        logger.error(result.body.errors)
         expect(result.status).toBe(404)
         expect(result.error).toBeDefined()
     })

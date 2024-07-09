@@ -26,7 +26,7 @@ describe('POST /api/users/login', function () {
         expect(result.body.data.token).toBeDefined();
         expect(result.body.data.token).not.toBe("test");
     });
-    
+
     it('should reject login if username and password is empty or invalid', async () => {
         const result = await supertest(web)
             .post('/api/users/login')
@@ -34,8 +34,7 @@ describe('POST /api/users/login', function () {
                 username: "",
                 password: ""
             });
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-        logger.info(message);
+        logger.error(result.body.errors)
 
         expect(result.status).toBe(400);
         expect(result.error).toBeDefined();
@@ -47,8 +46,7 @@ describe('POST /api/users/login', function () {
                 username: "salah",
                 password: "rahasia"
             });
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-        logger.info(message);
+        logger.error(result.body.errors)
 
         expect(result.status).toBe(401);
         expect(result.error).toBeDefined();
@@ -60,8 +58,7 @@ describe('POST /api/users/login', function () {
                 username: "test",
                 password: "salah"
             });
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-        logger.info(message);
+        logger.error(result.body.errors)
 
         expect(result.status).toBe(401);
         expect(result.error).toBeDefined();

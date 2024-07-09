@@ -61,6 +61,7 @@ describe('GET /api/contacts', function () {
         expect(result.body.paging.total_page).toBe(1);
         expect(result.body.paging.total_item).toBe(6);
     })
+    
     it('should can search by email', async () => {
         const result = await supertest(web)
             .get('/api/contacts')

@@ -57,9 +57,7 @@ describe('GET /api/contacts/:contactsId/addresses/:addressId', function () {
             .get('/api/contacts/' + (testContactBody.id + 1) + '/addresses/' + testAddressBody.id)
             .set('Authorization', 'test')
 
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-
-        logger.info(message);
+        logger.error(result.body.errors);
 
         expect(result.status).toBe(404)
         expect(result.error).toBeDefined()
@@ -73,9 +71,7 @@ describe('GET /api/contacts/:contactsId/addresses/:addressId', function () {
             .get('/api/contacts/' + (testContactBody.id) + '/addresses/' + (testAddressBody.id + 1))
             .set('Authorization', 'test')
 
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-
-        logger.error(message);
+        logger.error(result.body.errors);
 
         expect(result.status).toBe(404)
         expect(result.error).toBeDefined()
@@ -89,9 +85,7 @@ describe('GET /api/contacts/:contactsId/addresses/:addressId', function () {
             .get('/api/contacts/' + (testContactBody.id + 1) + '/addresses/' + (testAddressBody.id + 1))
             .set('Authorization', 'test')
 
-        const message = result.text.match(/Error: .*?(?=<br>)/)[0]
-
-        logger.error(message);
+        logger.error(result.body.errors);
 
         expect(result.status).toBe(404)
         expect(result.error).toBeDefined()
