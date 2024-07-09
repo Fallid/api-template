@@ -2,7 +2,7 @@
 
 ## Create Address API
 
-Endpoint : POST /api/contacts/:contactId/adresses
+Endpoint : POST /api/contacts/:contactId/addresses
 
 Headers : 
 - Authorization : token
